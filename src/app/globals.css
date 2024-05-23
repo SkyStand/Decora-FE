@@ -2,32 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Slab:wght@100..900&display=swap');
+
+input[type="email"],
+input[type="password"],
+input[type="text"]{
+    @apply block w-full my-4 rounded-xl;
+    @apply border p-3 border-emascoklat bg-gray-100;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+button{
+    @apply block w-full ;
+    @apply border border-gray-500 rounded-xl px-6 py-3;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+button[type="submit"], .submit{
+    @apply border-0 bg-emascoklat text-white;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.horizontalLines{
+    display: flex;
+    position: relative;
+    justify-content: space-between;
 }
+.horizontalLines::before{
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: grey;
+    position: absolute;
+    top: 50%;
+    left: -50px;
+}
+.horizontalLines::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: grey;
+    position: absolute;
+    top: 50%;
+    right: -50px;
+}
+
