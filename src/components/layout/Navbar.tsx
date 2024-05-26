@@ -21,20 +21,20 @@ const DropDownProfile = () => {
 
 const Navbar = () => {
   return (
-    <nav className='absolute w-full'>
-        <div className='flex w-[90%] py-4 mx-auto items-center justify-between'>
-            <div className='flex w-[20%] items-center justify-center'>
-                <div className='relative cursor-pointer '>
+    <nav className='absolute z-10 w-full max-w-7xl'>
+        <div className='flex py-4 items-center justify-between'>
+            <div className='flex w-[20%] items-center'>
+                <div className='cursor-pointer'>
                     <Image src="/images/logo.png" alt="logo" layout="responsive" width={73} height={50}  objectFit='contain'/>
                 </div>
-                <a href="#"className='ml-2 font-primary text-2xl font-bold text-primary '>DECORA</a>
+                <a href="#"className='ml-2 font-primary text-3xl font-bold text-primary '>DECORA</a>
             </div>
-            <div className='flex w-[70%] items-center justify-center gap-12 lg:gap-28 font-secondary text-lg text-primary font-semibold'>
-                <a href="#">FURNITURE</a>
-                <a href="#">SALE</a>
-                <a href="#">ARTICLE</a>
+            <div className='flex w-[60%] items-center justify-center gap-8 lg:gap-28 font-primary text-xl text-primary font-semibold'>
+                <a href="#">Furniture</a>
+                <a href="#">Sale</a>
+                <a href="#">Article</a>
             </div>
-            <div className='flex w-[20%] items-center justify-center font-secondary gap-4 text-primary'>
+            <div className='flex w-[20%] items-center font-secondary gap-4 text-primary justify-end'>
                 <HiShoppingCart size='35'/>
                 <FaHeart size='32'/>
                 {/* <DropDownProfile /> */}

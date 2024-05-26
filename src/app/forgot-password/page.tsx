@@ -1,11 +1,12 @@
 import React from 'react'
 import Image from 'next/image'
+import { Link } from 'react-router-dom';
 
-export default function Login() {
+export default function ForgotPassword() {
     return (
       <main className="overflow-y max-h-screen">
         <div className="w-full h-screen flex">
-            <div className="w-1/2 flex flex-col items-center justify-center my-auto">
+            <div className="w-3/5 flex flex-col items-center justify-center my-auto">
                 {/* ------- title -------- */}
                 <div className='flex items-center justify-center my-8'>
                     <div className='cursor-pointer'>
@@ -16,24 +17,17 @@ export default function Login() {
 
                 {/* ------- form ----------- */}
                 <form action="" className='flex flex-col w-3/4 mx-auto border-emascoklat border-2 py-12 p-2 rounded-lg items-center mb-8'>
-                    <h2 className="text-xl font-bold mb-6 text-center font-primary">Masuk Akun</h2>
+                    <h2 className="text-xl font-bold mb-6 text-center font-primary">Reset Kata Sandi</h2>
                     {/* -- */}
                     <input type="email" placeholder='Email'className='font-secondary max-w-sm'/>
-                    <input type="password" placeholder='Kata Sandi' className='font-secondary max-w-sm'/>
-                    <button type="submit" className='mt-10 font-secondary max-w-sm'>Masuk</button>
-
-                    {/* -- */}
-                    <span className="horizontalLines text-gray-500 my-8 font-secondary">ATAU</span>
-                    <div className="flex flex-col items-center justify-center font-secondary">
-                        <span>Tidak punya akun? <a href="/register" className="text-blue-500">Daftar</a></span>
-                        <a href="/forgot-password" className="text-gray-500 mt-3">Lupa kata sandi?</a>
-                    </div>
+                    <a href="/new-password" className='submit mt-10 text-center font-secondary w-full max-w-sm rounded-xl px-6 py-3'>Berikutnya</a>
+                    <a href="/" className="text-gray-500 mt-6 font-secondary">Kembali ke halaman masuk</a>
                 </form>
             </div>
 
             {/* -------- image ----------*/}
-            <div className="w-1/2 h-screen fixed right-0">
-                <Image src="/images/login.png" alt='login' layout='fill'/>
+            <div className="w-2/5 h-screen fixed right-0">
+                <Image src="/images/forgotpassword.png" alt='' layout='fill'/>
             </div>
         </div>
       </main>

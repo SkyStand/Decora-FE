@@ -1,13 +1,17 @@
 import Image from "next/image";
-import { Hero } from "../components";
 import Navbar from "../components/layout/Navbar";
 import Header from "@/components/layout/Header";
+import HomeMenu from "@/components/layout/HomeMenu";
+import Searchbar from "@/components/layout/Searchbar";
+
 
 export default function Home() {
   return (
-    <main className="overflow-hidden">
-      <Header />
+    <main className="" >
       <Navbar />
+      <Header />
+      {/* <Searchbar />   */}
+      <HomeMenu />
     </main>
   );
 }
