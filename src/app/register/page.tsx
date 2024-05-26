@@ -6,6 +6,7 @@ export default function Register() {
     <main className="overflow-y max-h-screen">
       <div className="w-full h-screen flex">
         <div className="w-1/2 flex flex-col items-center justify-center my-auto">
+
           {/* ------- title -------- */}
           <div className='flex items-center justify-center my-8'>
             <div className='relative cursor-pointer '>
