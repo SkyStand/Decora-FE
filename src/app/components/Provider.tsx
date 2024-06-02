@@ -1,6 +1,7 @@
 "use client"
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import Swal from 'sweetalert2';
 
 
 function Provider() {
@@ -8,7 +9,13 @@ function Provider() {
     const checkToken = () => {
         const token = Cookies.get('authToken');
         if (!token) {
-            return router.push('/auth/login')
+            Swal.fire({
+                title: 'No Access !',
+                text: 'Redirect to Login Page',
+                icon: 'error',
+            }).then(() => {
+                router.push('/');
+            });
         }
     }
     return {
