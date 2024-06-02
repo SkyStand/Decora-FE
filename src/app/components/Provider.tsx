@@ -10,7 +10,7 @@ function Provider() {
         const token = Cookies.get('authToken');
         if (!token) {
             Swal.fire({
-                title: 'No Acess !',
+                title: 'No Access !',
                 text: 'Redirect to Login Page',
                 icon: 'error',
             }).then(() => {
