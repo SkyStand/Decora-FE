@@ -2,9 +2,9 @@
 import React, { ChangeEvent, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import IRegister from '../../../data/interface/request/IRegister';
+import IRegister from '../../../../data/interface/request/IRegister';
 import Swal from 'sweetalert2';
-import AuthService from '../../../data/services/AuthService';
+import AuthService from '../../../../data/services/AuthService';
 
 export default function Register() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -58,14 +58,27 @@ export default function Register() {
           {/* ------- title -------- */}
           <div className='flex items-center justify-center my-8'>
             <div className='relative cursor-pointer '>
-              <Image src="/images/logo.png" alt="logo" layout="responsive" width={73} height={50} objectFit='contain' />
+              <svg width="40" height="40" viewBox="0 0 855 855" xmlns="http://www.w3.org/2000/svg">
+                  <rect className='fill-blue-tua' x="29.4482" y="41.7975" width="69.3458" height="768.504"/>
+                  <rect className='fill-blue-tua' x="221.337" y="41.7975" width="69.3458" height="768.504"/>
+                  <rect className='fill-blue-tua' x="405.626" y="398.976" width="69.3458" height="411.325"/>
+                  <rect className='fill-blue-tua' x="514.869" y="398.976" width="69.3458" height="411.325"/>
+                  <rect className='fill-blue-tua' x="757.105" y="41.7975" width="69.3458" height="768.504"/>
+                  <rect className='fill-blue-tua' x="29.5907" y="812.529" width="69.3458" height="445.523" transform="rotate(-90 29.5907 812.529)" />
+                  <rect className='fill-blue-tua' x="29.5907" y="446.923" width="69.3458" height="445.523" transform="rotate(-90 29.5907 446.923)"/>
+                  <rect className='fill-blue-tua' x="339.13" y="342.93" width="69.3458" height="360.978" transform="rotate(-90 339.13 342.93)"/>
+                  <rect className='fill-blue-tua' x="628.862" y="111.143" width="69.3458" height="190.939" transform="rotate(-90 628.862 111.143)"/>
+                  <rect className='fill-blue-tua' x="29.4482" y="111.143" width="69.3458" height="254.585" transform="rotate(-90 29.4482 111.143)"/>
+                  <rect className='fill-blue-tua' x="514.869" y="446.473" width="69.3458" height="185.239" transform="rotate(-90 514.869 446.473)"/>
+                  <rect className='fill-blue-tua' x="514.869" y="812.201" width="69.3458" height="311.581" transform="rotate(-90 514.869 812.201)"/>
+              </svg>
             </div>
-            <a href="/" className='ml-2 font-primary text-2xl font-bold'>DECORA</a>
+            <a href="/" className='ml-2 font-crete text-4xl'>Decora</a>
           </div>
 
           {/* ------- form ----------- */}
-          <form onSubmit={handleSubmit} className='flex flex-col w-3/4 mx-auto border-emascoklat border-2 py-12 p-2 rounded-lg items-center mb-8'>
-            <h2 className="text-xl font-bold mb-6 text-center font-primary">Buat Akun</h2>
+          <form onSubmit={handleSubmit} className='flex flex-col w-3/4 mx-auto font-worksans border-emascoklat border-2 py-12 p-2 rounded-lg items-center mb-8'>
+            <h2 className="text-2xl font-semibold mb-10 text-center">Buat Akun</h2>
             {/* -- */}
             <input type="text" name="name" value={data.name} onChange={handleChanges} placeholder='Nama' className='font-secondary max-w-sm' required />
             <input type="email" name="email" value={data.email} onChange={handleChanges} placeholder='Email' className='font-secondary max-w-sm' required />
@@ -78,11 +91,11 @@ export default function Register() {
               <a href="#" className="text-black"> Kebijakan Cookie</a> kami
             </span>
             {/* -- */}
-            <button type="submit" className='mt-10 font-secondary max-w-sm' disabled={loading}>
+            <button type="submit" className='mt-10 max-w-sm' disabled={loading}>
               {loading ? 'Loading...' : 'Daftar'}
             </button>
-            <span className="horizontalLines text-gray-500 my-8 font-secondary">ATAU</span>
-            <span className='font-secondary text-center'>Punya akun? <a href="/login" className="text-blue-500">Masuk</a></span>
+            <span className="horizontalLines text-gray-500 my-8">ATAU</span>
+            <span className='text-center'>Punya akun? <a href="/login" className="text-blue-500">Masuk</a></span>
           </form>
         </div>
 
