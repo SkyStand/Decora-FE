@@ -1,4 +1,5 @@
 import RoomTypeBox from '@/components/furniture/RoomTypeBox'
+import TabsStyle from '@/components/furniture/TabsStyle'
 import Header from '@/components/layout/Header'
 import Navbar from '@/components/layout/Navbar'
 import Image from 'next/image'
@@ -13,7 +14,8 @@ const page = () => {
         title="Furniture"
         isHomePage={false}
       />
-    <RoomTypeBox />
+      <RoomTypeBox />
+      <TabsStyle/>
     </main>
   )
 }
