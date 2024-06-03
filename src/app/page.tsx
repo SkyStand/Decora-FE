@@ -2,7 +2,6 @@
 import Image from "next/image";
 import Navbar from "../components/layout/Navbar";
 import Header from "@/components/layout/Header";
-import HomeMenu from "@/components/layout/HomeMenu";
 import Provider from "./components/Provider";
 import { useEffect } from "react";
 
@@ -14,10 +13,15 @@ export default function Home() {
   }, [checkToken]);
   return (
     <main className="" >
-      <Navbar />
-      <Header />
-      {/* <Searchbar />   */}
-      <HomeMenu />
+      <Navbar isHomePage={true} />
+      <Header
+        backgroundImage="/images/header/headerhome.png"
+        title="Rumahku udah hampir lengkap, tapi aku butuh karpet baru"
+        subtitle="Buat ruang untuk hidup lebih baik"
+        buttonText="Jelajahi Sekarang"
+        buttonLink="/furnitur"
+        isHomePage={true}
+      />
     </main>
   );
 }
