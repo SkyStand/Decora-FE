@@ -130,3 +130,15 @@
     transition-delay: 0ms !important;
   }
 }
+
+
+
+/* Tambahkan ini di file CSS Anda */
+.custom-checkbox input[type="checkbox"] {
+  accent-color: #1E40AF; /* Warna biru tua */
+}
+
+/* Untuk kondisi dicentang */
+.custom-checkbox input[type="checkbox"]:checked {
+  accent-color: #FF4500; /* Warna oranye */
+}
