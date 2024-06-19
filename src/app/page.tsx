@@ -19,7 +19,7 @@ export default function Home() {
         title="Rumahku udah hampir lengkap, tapi aku butuh karpet baru"
         subtitle="Buat ruang untuk hidup lebih baik"
         buttonText="Jelajahi Sekarang"
-        buttonLink="/furnitur"
+        buttonLink="/furniture"
         isHomePage={true}
       />
     </main>
