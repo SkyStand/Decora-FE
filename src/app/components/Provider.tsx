@@ -14,7 +14,7 @@ function Provider() {
                 text: 'Redirect to Login Page',
                 icon: 'error',
             }).then(() => {
-                router.push('/');
+                router.push('/login');
             });
         }
     }
