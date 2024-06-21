@@ -4,59 +4,59 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const products = [
-    {
-        id: 1,
-        name: "Classic Chair",
-        style: "Classic",
-        category: "chair",
-        image: "/images/furniture/livingroom.png",
-        price: 15189000,
-        discount: "60%",
-        discountedPrice: 6075600,
-        description: "This chair is perfect for any classic-style living room."
-    },
-    {
-        id: 2,
-        name: "Modern Table",
-        style: "Modern",
-        category: "table",
-        image: "/images/furniture/livingroom.png",
-        price: 2599999,
-        description: "A modern table that fits any modern living room."
-    },
-    {
-        id: 3,
-        name: "Minimalist Cabinet",
-        style: "Minimalist",
-        category: "cabinet",
-        image: "/images/furniture/livingroom.png",
-        price: 42899000,
-        discount: "20%",
-        discountedPrice: 34319200,
-        description: "A minimalist cabinet with ample storage space."
-    },
-    {
-        id: 4,
-        name: "Classic Bed",
-        style: "Classic",
-        category: "bed",
-        image: "/images/furniture/livingroom.png",
-        price: 329000,
-        discount: "10%",
-        discountedPrice: 296100,
-        description: "A classic bed that brings elegance to your bedroom."
-    },
-    {
-        id: 5,
-        name: "Modern Chair",
-        style: "Modern",
-        category: "chair",
-        image: "/images/furniture/livingroom.png",
-        price: 109999000,
-        description: "A modern chair with a sleek design."
-    }
-];
+// const products = [
+//     {
+//         id: 1,
+//         name: "Classic Chair",
+//         style: "Classic",
+//         category: "chair",
+//         image: "/images/furniture/livingroom.png",
+//         price: 15189000,
+//         discount: "60%",
+//         discountedPrice: 6075600,
+//         description: "This chair is perfect for any classic-style living room."
+//     },
+//     {
+//         id: 2,
+//         name: "Modern Table",
+//         style: "Modern",
+//         category: "table",
+//         image: "/images/furniture/livingroom.png",
+//         price: 2599999,
+//         description: "A modern table that fits any modern living room."
+//     },
+//     {
+//         id: 3,
+//         name: "Minimalist Cabinet",
+//         style: "Minimalist",
+//         category: "cabinet",
+//         image: "/images/furniture/livingroom.png",
+//         price: 42899000,
+//         discount: "20%",
+//         discountedPrice: 34319200,
+//         description: "A minimalist cabinet with ample storage space."
+//     },
+//     {
+//         id: 4,
+//         name: "Classic Bed",
+//         style: "Classic",
+//         category: "bed",
+//         image: "/images/furniture/livingroom.png",
+//         price: 329000,
+//         discount: "10%",
+//         discountedPrice: 296100,
+//         description: "A classic bed that brings elegance to your bedroom."
+//     },
+//     {
+//         id: 5,
+//         name: "Modern Chair",
+//         style: "Modern",
+//         category: "chair",
+//         image: "/images/furniture/livingroom.png",
+//         price: 109999000,
+//         description: "A modern chair with a sleek design."
+//     }
+// ];
 
 const categories = [
     { label: "Kursi", value: "chair" },
