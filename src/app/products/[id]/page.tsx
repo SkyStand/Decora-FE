@@ -1,83 +1,86 @@
 "use client"
 
 import Image from 'next/image';
-import React, { useState } from 'react';
-import Navbar from '@/components/layout/Navbar'; 
+import React, { useEffect, useState } from 'react';
+import Navbar from '@/components/layout/Navbar';
 import CartConfirmation from '@/components/CartConfirmation';
+import ProductService from '../../../../data/services/ProductService';
+import instance from '../../../../helpers/AxiosInstance';
+import IProduct from '../../../../data/interface/response/IProduct';
 
-const products = [
-    {
-        id: 1,
-        name: "Classic Chair",
-        style: "Classic",
-        category: "chair",
-        image: "/images/furniture/livingroom.png",
-        price: 15189000,
-        discount: "60%",
-        discountedPrice: 6075600,
-        description: "This chair is perfect for any classic-style living room.",
-        colors: ["#C0C0C0", "#FFD700", "#8B0000", "#000000"],
-        stock: 10,
-        dimensions: "80cm x 60cm x 40cm",
-        weight: "20kg"
-    },
-    {
-        id: 2,
-        name: "Modern Table",
-        style: "Modern",
-        category: "table",
-        image: "/images/furniture/livingroom.png",
-        price: 2599999,
-        description: "A modern table that fits any modern living room.",
-        colors: ["#C0C0C0", "#FFD700", "#8B0000", "#000000"],
-        stock: 5,
-        dimensions: "150cm x 75cm x 75cm",
-        weight: "30kg"
-    },
-    {
-        id: 3,
-        name: "Minimalist Cabinet",
-        style: "Minimalist",
-        category: "cabinet",
-        image: "/images/furniture/livingroom.png",
-        price: 42899000,
-        discount: "20%",
-        discountedPrice: 34319200,
-        description: "A minimalist cabinet with ample storage space.",
-        colors: ["#C0C0C0", "#FFD700", "#8B0000", "#000000"],
-        stock: 2,
-        dimensions: "100cm x 50cm x 200cm",
-        weight: "50kg"
-    },
-    {
-        id: 4,
-        name: "Classic Bed",
-        style: "Classic",
-        category: "bed",
-        image: "/images/furniture/livingroom.png",
-        price: 329000,
-        discount: "10%",
-        discountedPrice: 296100,
-        description: "A classic bed that brings elegance to your bedroom.",
-        colors: ["#C0C0C0", "#FFD700", "#8B0000", "#000000"],
-        stock: 7,
-        dimensions: "200cm x 180cm x 50cm",
-        weight: "70kg"
-    },
-    {
-        id: 5,
-        name: "Modern Chair",
-        style: "Modern",
-        category: "chair",
-        image: "/images/furniture/livingroom.png",
-        price: 109999000,
-        description: "A modern chair with a sleek design.",
-        colors: ["#C0C0C0", "#FFD700", "#8B0000", "#000000"],
-        stock: 0,
-        dimensions: "90cm x 90cm x 90cm",
-        weight: "15kg"
-    }
-];
+// const products = [
+//     {
+//         id: 1,
+//         name: "Classic Chair",
+//         style: "Classic",
+//         category: "chair",
+//         image: "/images/furniture/livingroom.png",
+//         price: 15189000,
+//         discount: "60%",
+//         discountedPrice: 6075600,
+//         description: "This chair is perfect for any classic-style living room.",
+//         colors: ["#C0C0C0", "#FFD700", "#8B0000", "#000000"],
+//         stock: 10,
+//         dimensions: "80cm x 60cm x 40cm",
+//         weight: "20kg"
+//     },
+//     {
+//         id: 2,
+//         name: "Modern Table",
+//         style: "Modern",
+//         category: "table",
+//         image: "/images/furniture/livingroom.png",
+//         price: 2599999,
+//         description: "A modern table that fits any modern living room.",
+//         colors: ["#C0C0C0", "#FFD700", "#8B0000", "#000000"],
+//         stock: 5,
+//         dimensions: "150cm x 75cm x 75cm",
+//         weight: "30kg"
+//     },
+//     {
+//         id: 3,
+//         name: "Minimalist Cabinet",
+//         style: "Minimalist",
+//         category: "cabinet",
+//         image: "/images/furniture/livingroom.png",
+//         price: 42899000,
+//         discount: "20%",
+//         discountedPrice: 34319200,
+//         description: "A minimalist cabinet with ample storage space.",
+//         colors: ["#C0C0C0", "#FFD700", "#8B0000", "#000000"],
+//         stock: 2,
+//         dimensions: "100cm x 50cm x 200cm",
+//         weight: "50kg"
+//     },
+//     {
+//         id: 4,
+//         name: "Classic Bed",
+//         style: "Classic",
+//         category: "bed",
+//         image: "/images/furniture/livingroom.png",
+//         price: 329000,
+//         discount: "10%",
+//         discountedPrice: 296100,
+//         description: "A classic bed that brings elegance to your bedroom.",
+//         colors: ["#C0C0C0", "#FFD700", "#8B0000", "#000000"],
+//         stock: 7,
+//         dimensions: "200cm x 180cm x 50cm",
+//         weight: "70kg"
+//     },
+//     {
+//         id: 5,
+//         name: "Modern Chair",
+//         style: "Modern",
+//         category: "chair",
+//         image: "/images/furniture/livingroom.png",
+//         price: 109999000,
+//         description: "A modern chair with a sleek design.",
+//         colors: ["#C0C0C0", "#FFD700", "#8B0000", "#000000"],
+//         stock: 0,
+//         dimensions: "90cm x 90cm x 90cm",
+//         weight: "15kg"
+//     }
+// ];
 
 const hexToColorName = (hex: string): string => {
     const colorNames: { [key: string]: string } = {
@@ -97,6 +100,8 @@ const ProductDetail = ({ params }: { params: { id: string } }) => {
     const [quantity, setQuantity] = useState(1);
     const [selectedColor, setSelectedColor] = useState(product?.colors[0] || '');
     const [isDescriptionOpen, setDescriptionOpen] = useState(false);
+    const [products, setProducts] = useState<IProduct[]>([]);
+    const [imagePath, setImagePath] = useState<string>()
     const [isDimensionsOpen, setDimensionsOpen] = useState(false);
     const [isModalOpen, setModalOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -108,6 +113,7 @@ const ProductDetail = ({ params }: { params: { id: string } }) => {
     const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setQuantity(Math.max(1, Math.min(product.stock, parseInt(e.target.value))));
     };
+
 
     const addToCart = () => {
         if (!selectedColor) {
@@ -121,6 +127,16 @@ const ProductDetail = ({ params }: { params: { id: string } }) => {
     const closeModal = () => {
         setModalOpen(false);
     };
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+        new ProductService(instance).fetch().then((value) => {
+            setProducts(value)
+        })
+        new ProductService(instance).getImagePath().then((value) => {
+            setImagePath(value)
+        })
+    }, [])
 
     return (
         <main className="relative pt-16">
@@ -148,9 +164,9 @@ const ProductDetail = ({ params }: { params: { id: string } }) => {
                         <h2 className="text-lg font-medium mb-2">Pilih warna:</h2>
                         <div className="flex gap-2">
                             {product.colors.map((color, index) => (
-                                <div 
-                                    key={index} 
-                                    className={`w-11 h-11 rounded-lg border flex items-center justify-center cursor-pointer ${color === selectedColor ? 'border-blue-tua' : ''}`} 
+                                <div
+                                    key={index}
+                                    className={`w-11 h-11 rounded-lg border flex items-center justify-center cursor-pointer ${color === selectedColor ? 'border-blue-tua' : ''}`}
                                     style={{ backgroundColor: color }}
                                     onClick={() => setSelectedColor(color)}
                                 >
@@ -166,14 +182,14 @@ const ProductDetail = ({ params }: { params: { id: string } }) => {
                             <button
                                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
                                 className="w-12 h-12 flex items-center justify-center border border-gray-400 rounded-full text-gray-700">
-                                    -
+                                -
                             </button>
-                            <input 
-                                type="number" 
-                                value={quantity} 
-                                onChange={handleQuantityChange} 
-                                className="w-16 text-center bg-transparent" 
-                                min={1} 
+                            <input
+                                type="number"
+                                value={quantity}
+                                onChange={handleQuantityChange}
+                                className="w-16 text-center bg-transparent"
+                                min={1}
                                 max={product.stock} />
                             <button
                                 onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
@@ -184,11 +200,11 @@ const ProductDetail = ({ params }: { params: { id: string } }) => {
                     </div>
 
                     {/* ------------- Add to Cart button -------------  */}
-                    <button 
-                        onClick={addToCart} 
+                    <button
+                        onClick={addToCart}
                         className="px-4 py-3 bg-salmon-3 text-salmon-1 text-lg font-medium rounded-2xl w-full border-none"
                         disabled={product.stock === 0}>
-                            {product.stock === 0 ? 'Stok Habis' : 'Tambah ke Keranjang'}
+                        {product.stock === 0 ? 'Stok Habis' : 'Tambah ke Keranjang'}
                     </button>
 
                     {errorMessage && (
@@ -229,7 +245,7 @@ const ProductDetail = ({ params }: { params: { id: string } }) => {
             </div>
 
             {/* ------------- Cart Confirmation -------------  */}
-            <CartConfirmation isOpen={isModalOpen} onClose={closeModal} product={product} quantity={quantity} selectedColor={hexToColorName(selectedColor)}  />
+            <CartConfirmation isOpen={isModalOpen} onClose={closeModal} product={product} quantity={quantity} selectedColor={hexToColorName(selectedColor)} />
         </main>
     );
 };

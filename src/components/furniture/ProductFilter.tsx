@@ -62,10 +62,10 @@ import ProductService from '../../../data/services/ProductService';
 // ];
 
 const categories = [
-    { label: "Kursi", value: "chair" },
-    { label: "Meja", value: "table" },
-    { label: "Kasur", value: "bed" },
-    { label: "Kabinet", value: "cabinet" },
+    { label: "Kursi", value: "kursi" },
+    { label: "Meja", value: "meja" },
+    { label: "Kasur", value: "kasur" },
+    { label: "Kabinet", value: "kabinet" },
 ];
 
 const sortOptions = [
