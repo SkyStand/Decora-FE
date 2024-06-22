@@ -4,27 +4,30 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
+import ProductService from '../../../../data/services/ProductService';
+import instance from '../../../../helpers/AxiosInstance';
+import IProduct from '../../../../data/interface/response/IProduct';
 
-const products = [
-    {
-        id: 1,
-        name: "Classic Chair",
-        category: "chair",
-        image: "/images/furniture/livingroom.png",
-        price: 15189000,
-        discount: "60%",
-        discountedPrice: 6075600,
-        description: "This chair is perfect for any classic-style living room."
-    },
-    {
-        id: 2,
-        name: "Modern Table",
-        category: "table",
-        image: "/images/furniture/livingroom.png",
-        price: 2599999,
-        description: "A modern table that fits any modern living room."
-    },
-];
+// const products = [
+//     {
+//         id: 1,
+//         name: "Classic Chair",
+//         category: "chair",
+//         image: "/images/furniture/livingroom.png",
+//         price: 15189000,
+//         discount: "60%",
+//         discountedPrice: 6075600,
+//         description: "This chair is perfect for any classic-style living room."
+//     },
+//     {
+//         id: 2,
+//         name: "Modern Table",
+//         category: "table",
+//         image: "/images/furniture/livingroom.png",
+//         price: 2599999,
+//         description: "A modern table that fits any modern living room."
+//     },
+// ];
 
 const categories = [
     { label: "Kursi", value: "chair" },
@@ -45,6 +48,8 @@ const ITEMS_PER_PAGE = 30;
 
 const LivingRoomPage: React.FC = () => {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [products, setProducts] = useState<IProduct[]>([]);
+    const [imagePath, setImagePath] = useState<string>()
     const [sortOption, setSortOption] = useState("relevant");
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -87,22 +92,29 @@ const LivingRoomPage: React.FC = () => {
     const totalPages = (products: any[]) => {
         return Math.ceil(products.length / ITEMS_PER_PAGE);
     };
-
+    useEffect(() => {
+        new ProductService(instance).fetch().then((value) => {
+            setProducts(value)
+        })
+        new ProductService(instance).getImagePath().then((value) => {
+            setImagePath(value)
+        })
+    }, [])
     useEffect(() => {
         if (filteredProducts().length < ITEMS_PER_PAGE) {
             setCurrentPage(1);
         }
-    }, [selectedCategories, sortOption]);
+    }, [selectedCategories, sortOption, filteredProducts]);
 
     return (
         <main>
             <Navbar isHomePage={false} />
             <div className="relative w-full h-[400px] mt-20">
-                <Image 
-                    src="/images/furniture/livingroom.png" 
-                    alt="Living Room Furniture" 
-                    layout="fill" 
-                    objectFit="cover" 
+                <Image
+                    src="/images/furniture/livingroom.png"
+                    alt="Living Room Furniture"
+                    layout="fill"
+                    objectFit="cover"
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center">
                     <h1 className="text-white text-4xl ml-8 font-crete">Living Room Furniture</h1>

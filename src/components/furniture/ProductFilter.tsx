@@ -1,62 +1,65 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import IProduct from '../../../data/interface/response/IProduct';
+import instance from '../../../helpers/AxiosInstance';
+import ProductService from '../../../data/services/ProductService';
 
-const products = [
-    {
-        id: 1,
-        name: "Classic Chair",
-        style: "Classic",
-        category: "chair",
-        image: "/images/furniture/livingroom.png",
-        price: 15189000,
-        discount: "60%",
-        discountedPrice: 6075600,
-        description: "This chair is perfect for any classic-style living room."
-    },
-    {
-        id: 2,
-        name: "Modern Table",
-        style: "Modern",
-        category: "table",
-        image: "/images/furniture/livingroom.png",
-        price: 2599999,
-        description: "A modern table that fits any modern living room."
-    },
-    {
-        id: 3,
-        name: "Minimalist Cabinet",
-        style: "Minimalist",
-        category: "cabinet",
-        image: "/images/furniture/livingroom.png",
-        price: 42899000,
-        discount: "20%",
-        discountedPrice: 34319200,
-        description: "A minimalist cabinet with ample storage space."
-    },
-    {
-        id: 4,
-        name: "Classic Bed",
-        style: "Classic",
-        category: "bed",
-        image: "/images/furniture/livingroom.png",
-        price: 329000,
-        discount: "10%",
-        discountedPrice: 296100,
-        description: "A classic bed that brings elegance to your bedroom."
-    },
-    {
-        id: 5,
-        name: "Modern Chair",
-        style: "Modern",
-        category: "chair",
-        image: "/images/furniture/livingroom.png",
-        price: 109999000,
-        description: "A modern chair with a sleek design."
-    }
-];
+// const products = [
+//     {
+//         id: 1,
+//         name: "Classic Chair",
+//         style: "Classic",
+//         category: "chair",
+//         image: "/images/furniture/livingroom.png",
+//         price: 15189000,
+//         discount: "60%",
+//         discountedPrice: 6075600,
+//         description: "This chair is perfect for any classic-style living room."
+//     },
+//     {
+//         id: 2,
+//         name: "Modern Table",
+//         style: "Modern",
+//         category: "table",
+//         image: "/images/furniture/livingroom.png",
+//         price: 2599999,
+//         description: "A modern table that fits any modern living room."
+//     },
+//     {
+//         id: 3,
+//         name: "Minimalist Cabinet",
+//         style: "Minimalist",
+//         category: "cabinet",
+//         image: "/images/furniture/livingroom.png",
+//         price: 42899000,
+//         discount: "20%",
+//         discountedPrice: 34319200,
+//         description: "A minimalist cabinet with ample storage space."
+//     },
+//     {
+//         id: 4,
+//         name: "Classic Bed",
+//         style: "Classic",
+//         category: "bed",
+//         image: "/images/furniture/livingroom.png",
+//         price: 329000,
+//         discount: "10%",
+//         discountedPrice: 296100,
+//         description: "A classic bed that brings elegance to your bedroom."
+//     },
+//     {
+//         id: 5,
+//         name: "Modern Chair",
+//         style: "Modern",
+//         category: "chair",
+//         image: "/images/furniture/livingroom.png",
+//         price: 109999000,
+//         description: "A modern chair with a sleek design."
+//     }
+// ];
 
 const categories = [
     { label: "Kursi", value: "chair" },
@@ -79,7 +82,8 @@ const ProductFilter: React.FC = () => {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [sortOption, setSortOption] = useState("relevant");
     const [currentPage, setCurrentPage] = useState(1);
-
+    const [products, setProducts] = useState<IProduct[]>([]);
+    const [imagePath, setImagePath] = useState<string>()
     const handleCategoryChange = (value: string) => {
         setSelectedCategories(prev =>
             prev.includes(value)
@@ -92,16 +96,16 @@ const ProductFilter: React.FC = () => {
         setSortOption(event.target.value);
     };
 
-    const filteredProducts = () => {
+    const filteredProducts = useCallback(() => {
         const productsByCategory = selectedCategories.length === 0
             ? products
             : products.filter(product => selectedCategories.includes(product.category));
 
         switch (sortOption) {
             case "priceLowHigh":
-                return [...productsByCategory].sort((a, b) => (a.discountedPrice || a.price) - (b.discountedPrice || b.price));
+                return [...productsByCategory].sort((a, b) => (a.variants[0]?.price - a.variants[0]?.diskon || a.variants[0]?.price) - (b.variants[0]?.price - b.variants[0]?.diskon || b.variants[0]?.price));
             case "priceHighLow":
-                return [...productsByCategory].sort((a, b) => (b.discountedPrice || b.price) - (a.discountedPrice || a.price));
+                return [...productsByCategory].sort((a, b) => (b.variants[0]?.price - b.variants[0]?.diskon || b.variants[0]?.price) - (a.variants[0]?.price - a.variants[0]?.diskon || a.variants[0]?.price));
             case "nameAZ":
                 return [...productsByCategory].sort((a, b) => a.name.localeCompare(b.name));
             case "nameZA":
@@ -109,14 +113,14 @@ const ProductFilter: React.FC = () => {
             default:
                 return productsByCategory;
         }
-    };
+    }, [products, selectedCategories, sortOption]);
 
-    const paginatedProducts = (products: any[]) => {
+    const paginatedProducts = (products: IProduct[]) => {
         const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
         return products.slice(startIndex, startIndex + ITEMS_PER_PAGE);
     };
 
-    const totalPages = (products: any[]) => {
+    const totalPages = (products: IProduct[]) => {
         return Math.ceil(products.length / ITEMS_PER_PAGE);
     };
 
@@ -124,7 +128,16 @@ const ProductFilter: React.FC = () => {
         if (filteredProducts().length < ITEMS_PER_PAGE) {
             setCurrentPage(1);
         }
-    }, [selectedCategories, sortOption]);
+    }, [selectedCategories, sortOption, filteredProducts]);
+
+    useEffect(() => {
+        new ProductService(instance).fetch().then((value) => {
+            setProducts(value)
+        })
+        new ProductService(instance).getImagePath().then((value) => {
+            setImagePath(value)
+        })
+    }, [])
 
     return (
         <div className="flex">
@@ -168,20 +181,20 @@ const ProductFilter: React.FC = () => {
                     {paginatedProducts(filteredProducts()).map(product => (
                         <Link key={product.id} href={`/products/${product.id}`} legacyBehavior>
                             <a className="cursor-pointer">
-                                <Image src={product.image} alt={product.name} width={300} height={300} className="w-full h-[300px] object-cover mb-4 rounded-lg" />
-                                {product.discount && (
+                                <img src={product.image.includes("http") == true ? product.image : `${imagePath}/${product.image}`} alt={product.name} width={300} height={300} className="w-full h-[300px] object-cover mb-4 rounded-lg" />
+                                {product.variants[0]?.diskon && (
                                     <div className="text-red-500 font-medium">
-                                        {product.discount} OFF
+                                        {product.variants[0].diskon}% OFF
                                     </div>
                                 )}
                                 <h2 className="font-medium text-blue-tua ">{product.name}</h2>
-                                {product.discount ? (
+                                {product.variants[0]?.diskon ? (
                                     <div className="flex items-center">
-                                        <p className="text-gray-500 font-medium line-through mr-4">{`Rp ${product.price.toLocaleString('id-ID')},00`}</p>
-                                        <p className="text-red-500 font-medium">{`Rp ${product.discountedPrice.toLocaleString('id-ID')},00`}</p>
+                                        <p className="text-gray-500 font-medium line-through mr-4">{`Rp ${product.variants[0]?.price.toLocaleString('id-ID')},00`}</p>
+                                        {/* <p className="text-red-500 font-medium">{`Rp ${product.discountedPrice.toLocaleString('id-ID')},00`}</p> */}
                                     </div>
                                 ) : (
-                                    <p className="text-blue-tua font-medium">{`Rp ${product.price.toLocaleString('id-ID')},00`}</p>
+                                    <p className="text-blue-tua font-medium">{`Rp ${product.variants[0]?.price.toLocaleString('id-ID')},00`}</p>
                                 )}
                             </a>
                         </Link>
