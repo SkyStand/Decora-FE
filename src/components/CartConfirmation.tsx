@@ -1,19 +1,30 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import IProductDetails from '../../data/interface/response/IProductDetails';
 
 interface CartConfirmationProps {
     isOpen: boolean;
     onClose: () => void;
-    product: any;
+    product: IProductDetails; // Assuming IProductDetails is your product details interface
     quantity: number;
-    selectedColor: string;
+    selectedVariant: {
+        id: number
+        product_id: number
+        image: string
+        variant_name: string
+        price: number
+        diskon: number
+        qty: number
+        created_at: string
+        updated_at: string
+    };
 }
 
-const CartConfirmation: React.FC<CartConfirmationProps> = ({ isOpen, onClose, product, quantity, selectedColor }) => {
+const CartConfirmation: React.FC<CartConfirmationProps> = ({ isOpen, onClose, product, quantity, selectedVariant }) => {
     if (!isOpen) return null;
 
-    const unitPrice = product.discountedPrice || product.price;
+    const unitPrice = (selectedVariant.price - selectedVariant.diskon) || selectedVariant.price;
     const subtotal = unitPrice * quantity;
 
     return (
@@ -31,8 +42,9 @@ const CartConfirmation: React.FC<CartConfirmationProps> = ({ isOpen, onClose, pr
                     <div className="ml-4">
                         <h3 className="text-lg font-medium">{product.name}</h3>
                         <p className="text-gray-500">{`Qty: ${quantity}`}</p>
-                        <p className="text-gray-500">{`Warna: ${selectedColor}`}</p>
-                        <p className="text-gray-500">{`Harga Satuan: Rp ${unitPrice.toLocaleString('id-ID')},00`}</p>
+                        {/* Example: Assuming selectedVariant is an object */}
+                        <p className="text-gray-500">{`Warna: ${selectedVariant.variant_name}`}</p>
+                        <p className="text-gray-500">{`Harga Satuan: Rp ${selectedVariant.price.toLocaleString('id-ID')},00`}</p>
                     </div>
                 </div>
                 <div className="flex justify-between mb-4">
@@ -41,8 +53,8 @@ const CartConfirmation: React.FC<CartConfirmationProps> = ({ isOpen, onClose, pr
                 </div>
                 <div className="flex justify-between items-center mb-4">
                     <Link href="/cart" legacyBehavior>
-                        <a 
-                            onClick={onClose} 
+                        <a
+                            onClick={onClose}
                             className="w-full p-3 bg-salmon-3 text-salmon-1 text-center font-semibold rounded-lg"
                         >
                             Lihat Keranjang

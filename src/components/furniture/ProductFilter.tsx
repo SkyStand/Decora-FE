@@ -191,7 +191,7 @@ const ProductFilter: React.FC = () => {
                                 {product.variants[0]?.diskon ? (
                                     <div className="flex items-center">
                                         <p className="text-gray-500 font-medium line-through mr-4">{`Rp ${product.variants[0]?.price.toLocaleString('id-ID')},00`}</p>
-                                        {/* <p className="text-red-500 font-medium">{`Rp ${product.discountedPrice.toLocaleString('id-ID')},00`}</p> */}
+                                        <p className="text-red-500 font-medium">{`Rp ${(product.variants[0]?.price - (product.variants[0]?.price * product.variants[0]?.diskon / 100)).toLocaleString('id-ID')},00`}</p>
                                     </div>
                                 ) : (
                                     <p className="text-blue-tua font-medium">{`Rp ${product.variants[0]?.price.toLocaleString('id-ID')},00`}</p>
