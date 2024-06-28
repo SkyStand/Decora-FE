@@ -25,7 +25,7 @@ export default class ProductService {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
-        })).data;
+        })).data.data;
     }
 
     async getCartItems(): Promise<ICartItems[]> {
