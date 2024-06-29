@@ -1,12 +1,12 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import ProductService from '../../../../data/services/ProductService';
 import instance from '../../../../helpers/AxiosInstance';
-import IProduct from '../../../../data/interface/response/IProduct';
+import IProduct, { Variant }  from '../../../../data/interface/response/IProduct';
 
 // const products = [
 //     {
@@ -65,24 +65,36 @@ const LivingRoomPage: React.FC = () => {
         setSortOption(event.target.value);
     };
 
-    const filteredProducts = () => {
+    const calculateDiscountedPrice = (variant: Variant) => {
+        return variant.price - (variant.price * (variant.diskon / 100));
+    };
+
+    const filteredProducts = useCallback(() => {
         const productsByCategory = selectedCategories.length === 0
             ? products
             : products.filter(product => selectedCategories.includes(product.category));
 
-        switch (sortOption) {
-            case "priceLowHigh":
-                return [...productsByCategory].sort((a, b) => (a.discountedPrice || a.price) - (b.discountedPrice || b.price));
-            case "priceHighLow":
-                return [...productsByCategory].sort((a, b) => (b.discountedPrice || b.price) - (a.discountedPrice || a.price));
-            case "nameAZ":
-                return [...productsByCategory].sort((a, b) => a.name.localeCompare(b.name));
-            case "nameZA":
-                return [...productsByCategory].sort((a, b) => b.name.localeCompare(a.name));
-            default:
-                return productsByCategory;
-        }
-    };
+            switch (sortOption) {
+                case "priceLowHigh":
+                    return [...productsByCategory].sort((a, b) => {
+                        const priceA = a.variants.length > 0 ? calculateDiscountedPrice(a.variants[0]) : 0;
+                        const priceB = b.variants.length > 0 ? calculateDiscountedPrice(b.variants[0]) : 0;
+                        return priceA - priceB;
+                    });
+                case "priceHighLow":
+                    return [...productsByCategory].sort((a, b) => {
+                        const priceA = a.variants.length > 0 ? calculateDiscountedPrice(a.variants[0]) : 0;
+                        const priceB = b.variants.length > 0 ? calculateDiscountedPrice(b.variants[0]) : 0;
+                        return priceB - priceA;
+                    });
+                case "nameAZ":
+                    return [...productsByCategory].sort((a, b) => a.name.localeCompare(b.name));
+                case "nameZA":
+                    return [...productsByCategory].sort((a, b) => b.name.localeCompare(a.name));
+                default:
+                    return productsByCategory;
+            }
+    }, [selectedCategories, sortOption, products]);
 
     const paginatedProducts = (products: any[]) => {
         const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
