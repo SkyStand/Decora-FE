@@ -1,11 +1,12 @@
-"use client";
-
+"use client"
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/layout/Navbar';
 import CartService from '../../../data/services/CartService';
 import ICartItems from '../../../data/interface/response/ICartItems';
+import ProductService from '../../../data/services/ProductService';
+import instance from '../../../helpers/AxiosInstance';
 
 interface ICartItemsExtended extends ICartItems {
     selected: boolean;
@@ -15,11 +16,13 @@ const CartPage = () => {
     const [cartData, setCartData] = useState<ICartItemsExtended[]>([]);
     const [selectAll, setSelectAll] = useState(false);
     const router = useRouter();
+    const [imagePath, setImagePath] = useState<string>("");
 
     const fetchData = async () => {
         try {
             const cartService = new CartService();
             const data = await cartService.fetch();
+            console.log("Fetched cart data:", data); // Log fetched data
             const initializedData = data.map(item => ({ ...item, selected: false }));
             setCartData(initializedData);
         } catch (error) {
@@ -28,6 +31,9 @@ const CartPage = () => {
     };
 
     useEffect(() => {
+        new ProductService(instance).getImagePath().then((value) => {
+            setImagePath(value);
+        });
         fetchData();
     }, []);
 
@@ -97,7 +103,7 @@ const CartPage = () => {
                                 <input type="checkbox" checked={item.selected} onChange={() => handleSelectItem(item.id)} className="mr-4" />
                                 {item.variants && item.variants.length > 0 ? (
                                     <>
-                                        <Image src={item.variants[0].image} alt={item.variants[0].variant_name} width={700} height={600} className="w-[150px] h-[100px] object-cover rounded-lg" />
+                                        <img src={item.variants[0].image.includes("http") ? item.variants[0].image : `${imagePath}/${item.variants[0].image}`} alt={item.variants[0].variant_name} width={700} height={600} className="w-[150px] h-[100px] object-cover rounded-lg" />
                                         <div className="ml-4 flex-1">
                                             <h2 className="text-lg font-medium">{item.variants[0].variant_name}</h2>
                                             <div className="flex items-center mt-2">
@@ -139,7 +145,6 @@ const CartPage = () => {
                                 )}
                             </div>
                         ))}
-
 
                     </div>
                     <div className="border border-salmon-3 rounded-lg p-4 flex flex-col h-auto">

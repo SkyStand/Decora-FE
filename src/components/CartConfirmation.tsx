@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import IProductDetails from '../../data/interface/response/IProductDetails';
+import instance from '../../helpers/AxiosInstance';
+import ProductService from '../../data/services/ProductService';
 
 interface CartConfirmationProps {
     isOpen: boolean;
@@ -26,7 +28,13 @@ const CartConfirmation: React.FC<CartConfirmationProps> = ({ isOpen, onClose, pr
 
     const unitPrice = (selectedVariant.price - selectedVariant.diskon) || selectedVariant.price;
     const subtotal = unitPrice * quantity;
+    const [imagePath, setImagePath] = useState<string>("");
+    useEffect(() => {
 
+        new ProductService(instance).getImagePath().then((value) => {
+            setImagePath(value)
+        })
+    }, []);
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 font-worksans">
             <div className="bg-white rounded-lg p-8 w-full max-w-lg relative">
@@ -38,7 +46,7 @@ const CartConfirmation: React.FC<CartConfirmationProps> = ({ isOpen, onClose, pr
                 </button>
                 <h2 className="text-2xl font-semibold mb-4">Ditambahkan ke Keranjang</h2>
                 <div className="flex items-center mb-8">
-                    <Image src={product.image} alt={product.name} width={150} height={100} className="rounded-lg w-[150px] h-[100px] object-cover" />
+                    <img src={product.image.includes("http") == true ? product.image : `${imagePath}/${product.image}`} alt={product.name} width={150} height={100} className="rounded-lg w-[150px] h-[100px] object-cover" />
                     <div className="ml-4">
                         <h3 className="text-lg font-medium">{product.name}</h3>
                         <p className="text-gray-500">{`Qty: ${quantity}`}</p>
