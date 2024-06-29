@@ -119,7 +119,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ params }) => {
             <Navbar isHomePage={false} />
             <div className="w-full h-auto mx-auto flex flex-col lg:flex-row items-start py-8 gap-8">
                 <div className="w-full lg:w-1/2">
-                    <img src={products.image.includes("http") == true ? products.image : `${imagePath}/${products.image}`}
+                    <Image src={products.image.includes("http") == true ? products.image : `${imagePath}/${products.image}`}
                         alt={products.name}
                         width={700}
                         height={600}
@@ -128,8 +128,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ params }) => {
                 </div>
                 <div className="w-full lg:w-1/2 font-worksans lg:pl-8 flex flex-col justify-center">
                     <h1 className="text-2xl font-semibold mb-2">{products.name}</h1>
-
-                    <div className="mb-6 mt-2">
+                    <div className="mb-6">
                         {selectedVariant && selectedVariant.diskon ? (
                             <>
                                 <span className="text-xl font-semibold text-red-600 mr-2">{`Rp ${discountedPrice?.toLocaleString(
@@ -160,7 +159,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ params }) => {
                                         }`}
                                     onClick={() => handleVariantChange(index)}
                                 >
-                                    <img
+                                    <Image
                                         src={variant.image.includes("http") == true ? variant.image : `${imagePath}/${variant.image}`}
                                         alt={variant.variant_name}
                                         width={100}
