@@ -90,11 +90,9 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ params }) => {
             const existingCartItem = cartData.find(item => item.variant_id === selectedVariant.id);
 
             if (existingCartItem) {
-                // Variant already exists in cart, update quantity
                 const response = await cartService.update(selectedVariant.id, quantity, existingCartItem.id);
                 console.log("Updated cart item:", response);
             } else {
-                // Variant doesn't exist in cart, insert new item
                 const response = await cartService.insert(selectedVariant.id, quantity);
                 console.log("Added to cart:", response);
             }
