@@ -12,25 +12,27 @@ export default class CartService {
 
     async fetch(): Promise<ICartItems[]> {
         const token = cookies.get('authToken');
-        return (await this.axiosInstance.post('cart', null, {
+        return (await this.axiosInstance.get('cart', {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
         })).data;
     }
+
+
 
     async insert(variant_id: number, data: number): Promise<IinsertCart> {
         const token = cookies.get('authToken');
-        return (await this.axiosInstance.post(`upsert/cart`, { qty: data, variant_id: variant_id }, {
+        return (await this.axiosInstance.post(`cart`, { qty: data, variant_id: variant_id }, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
         })).data;
     }
 
-    async update(variant_id: number, data: number): Promise<IUpdateCart> {
+    async update(variant_id: number, data: number, cart_id: number): Promise<IUpdateCart> {
         const token = cookies.get('authToken');
-        return (await this.axiosInstance.post(`upsert/cart`, { qty: data, variant_id: variant_id }, {
+        return (await this.axiosInstance.put(`cart/${cart_id}`, { qty: data, variant_id: variant_id }, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
