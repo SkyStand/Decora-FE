@@ -6,18 +6,18 @@ import IProductDetails from '../../data/interface/response/IProductDetails';
 interface CartConfirmationProps {
     isOpen: boolean;
     onClose: () => void;
-    product: IProductDetails; // Assuming IProductDetails is your product details interface
+    product: IProductDetails;
     quantity: number;
     selectedVariant: {
-        id: number
-        product_id: number
-        image: string
-        variant_name: string
-        price: number
-        diskon: number
-        qty: number
-        created_at: string
-        updated_at: string
+        id: number;
+        product_id: number;
+        image: string;
+        variant_name: string;
+        price: number;
+        diskon: number;
+        qty: number;
+        created_at: string;
+        updated_at: string;
     };
 }
 
@@ -38,11 +38,10 @@ const CartConfirmation: React.FC<CartConfirmationProps> = ({ isOpen, onClose, pr
                 </button>
                 <h2 className="text-2xl font-semibold mb-4">Ditambahkan ke Keranjang</h2>
                 <div className="flex items-center mb-8">
-                    <Image src={product.image} alt={product.name} width={700} height={600} className="rounded-lg w-[150px] h-[100px] object-cover" />
+                    <Image src={product.image} alt={product.name} width={150} height={100} className="rounded-lg w-[150px] h-[100px] object-cover" />
                     <div className="ml-4">
                         <h3 className="text-lg font-medium">{product.name}</h3>
                         <p className="text-gray-500">{`Qty: ${quantity}`}</p>
-                        {/* Example: Assuming selectedVariant is an object */}
                         <p className="text-gray-500">{`Warna: ${selectedVariant.variant_name}`}</p>
                         <p className="text-gray-500">{`Harga Satuan: Rp ${selectedVariant.price.toLocaleString('id-ID')},00`}</p>
                     </div>
