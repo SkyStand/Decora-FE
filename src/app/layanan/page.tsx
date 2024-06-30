@@ -6,6 +6,8 @@ import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Navbar from '@/components/layout/Navbar';
+import Link from 'next/link';
+import { designers } from '../../../data/Designers';
 
 const ServicePage = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -24,13 +26,13 @@ const ServicePage = () => {
     }, []);
 
     const galleryImages = [
-        "/images/services/galleryservice1.png",
-        "/images/services/galleryservice2.png",
-        "/images/services/galleryservice3.png",
-        "/images/services/galleryservice4.png",
-        "/images/services/galleryservice5.png",
-        "/images/services/galleryservice6.png",
-        "/images/services/galleryservice7.png"
+        "/images/services/slidegallery/galleryservice1.png",
+        "/images/services/slidegallery/galleryservice2.png",
+        "/images/services/slidegallery/galleryservice3.png",
+        "/images/services/slidegallery/galleryservice4.png",
+        "/images/services/slidegallery/galleryservice5.png",
+        "/images/services/slidegallery/galleryservice6.png",
+        "/images/services/slidegallery/galleryservice7.png"
     ];
 
     const settings = {
@@ -70,34 +72,6 @@ const ServicePage = () => {
             />
         );
     }
-
-    const designers = [
-        {
-            name: "Andi Wijaya",
-            description: "Andi Wijaya merancang furnitur bergaya dengan berbagai fungsi. Ia berdedikasi untuk membawa warisan Indonesia ke audiens internasional dan berhasil dalam hal ini dengan fokus pada mengoptimalkan proses produksi dan membuatnya efisien tanpa mengorbankan tampilan.",
-            link: "#",
-            image: "/images/services/agamriadi.png"
-        },
-        {
-            name: "Budi Setiawan",
-            description: "Budi Setiawan lulus sebagai desainer mode pada tahun 1990 tetapi menggunakan pendidikannya untuk mengeksplorasi seluruh spektrum desain. Ketertarikannya pada matematika bersama dengan pengalamannya yang luas memberinya kemampuan intuitif untuk dengan cepat menilai apakah sebuah desain baru akan berhasil atau tidak.",
-            link: "#",
-            image: "/images/services/rezawahyudi.png"
-        },
-        {
-            name: "Citra Nirmala",
-            description: "Citra Nirmala selalu setia pada warisan desain Indonesia yang sangat menjadi bagian dari pendidikan dan pertumbuhannya. 'Saya tumbuh dengan fungsionalisme dan kerajinan tangan. Arsitek Indonesia tahun 50-an dan 60-an adalah teman orang tua saya dan di antara guru-guru saya di Sekolah Arsitektur.'",
-            link: "#",
-            image: "/images/services/yinjie.png"
-        },
-        {
-            name: "Dewi Anjani",
-            description: "Dengan gelar Master di bidang Arsitektur dan Desain serta bertahun-tahun pengalaman di industri furnitur, Dewi Anjani menciptakan desain yang didasarkan pada pengetahuan profesional dan dibuat untuk penggunaan sehari-hari.",
-            link: "#",
-            image: "/images/services/shierlygouw.png"
-        }
-    ];
-
     return (
         <main className="">
             <div className="fixed top-0 w-full z-50">
@@ -176,10 +150,15 @@ const ServicePage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     {designers.map((designer, index) => (
                         <div key={index} className="">
-                            <Image src={designer.image} alt={designer.name} width={300} height={400} className="w-1[300] h-[400] object-cover mb-4 rounded-lg" />
-                            <h3 className="text-xl font-semibold mb-2">{designer.name}</h3>
-                            <p className="text-gray-700 mb-4">{designer.description}</p>
-                            <a href={designer.link} className="text-blue-500 underline">Kenali {designer.name}</a>
+                            <Image src={designer.image} alt={designer.name} width={300} height={400} className="w-[300px] h-[400px] object-cover mb-4 rounded-lg" />
+                            <h3 className="text-xl mb-1 font-crete">{designer.name}</h3>
+                            <p className="text-gray-700 mb-3">{designer.description1}</p>
+                            <Link legacyBehavior href={`/layanan/designers/${designer.id}`}>
+                                <a className="text-salmon-3 flex items-center gap-2">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#F08E80" xmlns="http://www.w3.org/2000/svg"><path d="M12 11V8L16 12L12 16V13H8V11H12ZM12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20Z"/></svg>
+                                    Mengenal {designer.name.split(' ')[0]}
+                                </a>
+                            </Link>
                         </div>
                     ))}
                 </div>
